@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#702D40">
+  <meta name="description" content="La invitación de boda de Fabiola y Josué · 19 de diciembre de 2026">
+  <title>Fabiola & Josué · 19.12.2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="no-scroll">
+  <div id="envelope-screen" class="envelope-screen">
+    <div class="fairy-lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="pine pine-left" aria-hidden="true">✦</div>
+    <p class="eyebrow">19 · DICIEMBRE · 2026</p>
+    <p class="envelope-title">Una invitación<br>muy especial<br>para ti…</p>
+    <div class="envelope" aria-hidden="true">
+      <div class="letter"></div>
+      <div class="envelope-back"></div>
+      <div class="envelope-flap"></div>
+      <div class="envelope-front"></div>
+      <div class="wax">F<span>♡</span>J</div>
+    </div>
+    <button id="open-invite" class="btn btn-wine">Abrir invitación <span aria-hidden="true">↗</span></button>
+    <span class="pine-corner" aria-hidden="true">✳</span>
+  </div>
+  <!-- Música: coloca una copia autorizada de la canción en assets/brillas.mp3 -->
+  <audio id="wedding-audio" preload="none" loop src="assets/brillas.mp3"></audio>
+  <button id="music-toggle" class="music-toggle" type="button" aria-label="Reproducir música"
+    title="Brillas · León Larregui" hidden><span id="music-icon" aria-hidden="true">♫</span><span
+      id="music-label">Música</span></button>
+  <header class="site-header"><a href="#inicio" class="monogram">F <span>&</span> J</a><button id="menu-toggle"
+      aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <nav id="site-nav"><a href="#inicio">Inicio</a><a href="#vestimenta">Vestimenta</a><a
+        href="#ubicaciones">Ubicaciones</a><a href="#confirmar">Confirmar</a></nav>
+  </header>
+  <main>
+    <section class="hero" id="inicio"><img class="hero-image" src="assets/IMG_6670.webp"
+        alt="Fabiola y Josué compartiendo un beso">
+      <div class="hero-overlay"></div>
+      <div class="hero-content reveal"><span class="eyebrow light">NUESTRA BODA CIVIL</span>
+        <h1>Fabiola <span>&</span><br>Josué</h1>
+        <div class="fine-line">✦</div>
+        <p>19 · DICIEMBRE · 2026</p><a class="scroll-cue" href="#bienvenida"
+          aria-label="Deslizar para conocer la invitación">⌄</a>
+      </div>
+    </section>
+    <section id="bienvenida" class="section paper centered"><span class="eyebrow reveal">CELEBREMOS EL AMOR</span>
+      <h2 class="reveal">¡Estás invitado!</h2>
+      <div class="separator reveal">✦</div>
+      <p class="intro reveal">Después de compartir tantos momentos juntos, hemos decidido dar este paso tan importante
+        en nuestras vidas.</p>
+      <p class="intro reveal">Nos haría muy felices contar contigo en nuestra ceremonia civil y en la celebración de
+        nuestra boda.</p>
+      <div class="tree-line" aria-hidden="true">♠ ♠ ♠ ♠ ♠ ♠ ♠</div>
+    </section>
+    <section id="cuenta" class="section twilight centered"><span class="eyebrow light reveal">19 · 12 · 2026</span>
+      <h2 class="reveal">Falta menos para<br><em>nuestro para siempre</em></h2>
+      <div class="separator reveal">✦</div>
+      <div class="countdown reveal">
+        <div><strong id="days">—</strong><small>Días</small></div>
+        <div><strong id="hours">—</strong><small>Horas</small></div>
+        <div><strong id="minutes">—</strong><small>Minutos</small></div>
+        <div><strong id="seconds">—</strong><small>Segundos</small></div>
+      </div><img class="feature-image reveal" src="assets/IMG_6659.webp" alt="Fabiola y Josué en un momento romántico">
+    </section>
+    <section id="historia" class="section wine centered"><span class="eyebrow light reveal">NOSOTROS</span>
+      <h2 class="reveal">Nuestra historia</h2>
+      <div class="separator reveal">✦</div>
+      <p class="intro reveal">Una historia hecha de momentos pequeños, abrazos inolvidables y muchos sueños por cumplir.
+      </p>
+      <div class="story-line reveal"><span>Nos conocimos</span><p>2015</p><i>♡</i><span>Nos elegimos</span><p>2016</p><i>♡</i><span>Nos
+          comprometimos</span><p>2025</p><i>♡</i><strong>19 · 12 · 2026</strong></div><img class="story-photo reveal"
+        src="assets/IMG_6639.webp" alt="Fotografía en blanco y negro de Fabiola y Josué">
+    </section>
+    <section id="galeria" class="section paper centered"><span class="eyebrow reveal">RECUERDOS</span>
+      <h2 class="reveal">Nuestros momentos</h2>
+      <div class="separator reveal">✦</div>
+      <div class="gallery" aria-label="Galería de nuestros momentos"><button class="gallery-item reveal"
+          data-full="assets/IMG_6642.webp"><img loading="lazy" src="assets/IMG_6642.webp"
+            alt="Fabiola y Josué abrazados"></button><button class="gallery-item reveal"
+          data-full="assets/IMG_6649.webp"><img loading="lazy" src="assets/IMG_6649.webp"
+            alt="Fabiola y Josué juntos al aire libre"></button><button class="gallery-item reveal"
+          data-full="assets/IMG_6650.webp"><img loading="lazy" src="assets/IMG_6650.webp"
+            alt="Un detalle de su anillo"></button><button class="gallery-item reveal"
+          data-full="assets/IMG_6661.webp"><img loading="lazy" src="assets/IMG_6661.webp"
+            alt="Una fotografía romántica de la pareja"></button></div>
+    </section>
+    <section id="vestimenta" class="section paper dress-section centered"><span class="eyebrow reveal">PARA ESE
+        DÍA</span>
+      <h2 class="reveal">Código de vestimenta</h2>
+      <div class="separator reveal">✦</div>
+      <p class="dress-title reveal">Formal / Semiformal</p>
+      <p class="reveal">Nuestra boda será una celebración familiar, por lo que te pedimos elegir un atuendo acorde con
+        la ocasión.</p>
+      <div class="outfit-illustrations reveal" aria-label="Ilustraciones decorativas de un vestido y un traje"><svg
+          viewBox="0 0 110 150" role="img" aria-label="Vestido">
+          <path d="M45 9 L65 9 L70 31 L61 52 L92 133 Q55 146 18 133 L49 52 L40 31 Z" />
+          <path
+            d="M45 9 L38 22 L28 39 L43 45 L50 31 M65 9 L72 22 L82 39 L67 45 L60 31 M49 52 L61 52 M18 133 Q55 119 92 133" />
+        </svg><svg viewBox="0 0 110 150" role="img" aria-label="Traje">
+          <path
+            d="M34 14 L48 8 L62 8 L76 14 L94 35 L89 134 L70 134 L66 73 L62 134 L44 134 L40 73 L36 134 L17 134 L14 35 Z" />
+          <path
+            d="M48 8 L55 29 L62 8 L68 41 L55 53 L42 41 Z M55 29 L52 61 L56 83 L59 61 Z M16 40 L34 52 L40 73 M94 40 L76 52 L70 73" />
+        </svg></div>
+      <h3 class="reveal">Colores que te pedimos evitar</h3>
+      <div class="swatches reveal">
+        <div><i style="--swatch:#702D40"></i><small>Vino</small></div>
+        <div><i style="--swatch:#B3242A"></i><small>Rojo</small></div>
+        <div><i style="--swatch:#FFF"></i><small>Blanco</small></div>
+        <div><i style="--swatch:#E7DCC8"></i><small>Hueso</small></div>
+        <div><i style="--swatch:#F6EAD9"></i><small>Marfil</small></div>
+      </div>
+      <p class="small reveal">También tonos muy similares y colores neón o fosforescentes.</p>
+      <div id="family-rules" class="rules reveal">
+        <h3>También te pedimos evitar</h3>
+        <ul>
+          <li>Escotes muy pronunciados y transparencias excesivas.</li>
+          <li>Vestidos o faldas demasiado cortos.</li>
+          <li>Prendas excesivamente ajustadas, estilo antro.</li>
+          <li>Lentejuelas y brillos demasiado llamativos.</li>
+        </ul>
+      </div>
+      <p class="dress-thanks reveal">Gracias por ayudarnos a hacer de este día una celebración especial para todos. ♡
+      </p>
+    </section>
+    <section id="ubicaciones" class="section wine centered"><span class="eyebrow light reveal">TE ESPERAMOS</span>
+      <h2 class="reveal">Ubicaciones</h2>
+      <div class="separator reveal">✦</div>
+      <div class="location-cards">
+        <article class="location-card reveal">
+          <div class="location-head">♧ &nbsp; Registro Civil</div>
+          <div class="location-body">
+            <h3 id="civil-name">Registro Civil — por confirmar</h3>
+            <p id="civil-address">Dirección pendiente</p>
+            <p id="civil-time">Horario por confirmar</p><a id="civil-map" class="btn btn-wine is-disabled"
+              aria-disabled="true">Cómo llegar ↗</a>
+          </div>
+        </article>
+        <article class="location-card reveal">
+          <div class="location-head">♡ &nbsp; Recepción</div>
+          <div class="location-body">
+            <h3 id="party-name">Salón o lugar — por confirmar</h3>
+            <p id="party-address">Dirección pendiente</p>
+            <p id="party-time">Horario por confirmar</p><a id="party-map" class="btn btn-wine is-disabled"
+              aria-disabled="true">Cómo llegar ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section id="confirmar" class="section wine centered"><span class="eyebrow light reveal">NOS ENCANTARÁ VERTE</span>
+      <h2 class="reveal">Confirma tu asistencia</h2>
+      <div class="separator reveal">✦</div>
+      <p class="reveal">Queremos celebrar contigo. Por favor, cuéntanos si nos acompañarás.</p>
+      <a href="/app/" class="btn btn-light">Confirmar asistencia ↗</a>
+    </section>
+    <section id="despedida" class="ending"><img src="assets/IMG_6610.webp" alt="Fabiola y Josué juntos">
+      <div class="ending-shade"></div>
+      <div class="ending-content reveal"><span class="eyebrow light">19 · 12 · 2026</span>
+        <h2>Gracias por ser parte<br>de este momento<br>tan especial.</h2>
+        <p>¡Te esperamos para celebrar juntos!</p>
+        <div class="separator">✦</div>
+        <div class="signature">Fabiola & Josué</div>
+      </div>
+      <div class="fairy-lights bottom-lights" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </section>
+  </main>
+  <dialog id="photo-modal" aria-label="Fotografía ampliada"><button id="close-modal"
+      aria-label="Cerrar fotografía">×</button><img alt="Foto ampliada" src=""></dialog>
+  <script>window.INVITE_VARIANT = "general";</script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
