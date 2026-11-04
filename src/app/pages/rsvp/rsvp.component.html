@@ -1,0 +1,138 @@
+@if (loading) {
+  <main class="success-container">
+    <p>Cargando tu invitación...</p>
+  </main>
+}
+
+@if (errorMessage) {
+  <main class="success-container">
+    <h1>¡Ups!</h1>
+    <p>{{ errorMessage }}</p>
+  </main>
+}
+
+@if (guest && !submitted && !loading && !errorMessage) {
+  <main class="rsvp-container">
+    <mat-card class="rsvp-card">
+
+      <mat-card-content>
+
+        <div class="header">
+          <span class="subtitle">¡Nos encantaría contar contigo!</span>
+
+          <h1>Confirmación de asistencia</h1>
+
+          <p class="guest-name">
+            Hola, {{ guest.name }}
+          </p>
+
+          <p class="description">
+            Nos gustaría saber si podrás acompañarnos en este
+            día tan especial.
+          </p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="confirmAttendance()">
+
+          <section class="attendance-section">
+            <h3>¿Nos acompañarás?</h3>
+
+            <mat-radio-group
+              formControlName="attending"
+              class="attendance-options">
+
+              <mat-radio-button [value]="true">
+                ¡Sí, ahí estaré!
+              </mat-radio-button>
+
+              <mat-radio-button [value]="false">
+                No podré asistir
+              </mat-radio-button>
+
+            </mat-radio-group>
+          </section>
+
+          @if (form.controls.attending.value && guest.maxCompanions > 0) {
+            <section class="companions-section">
+
+              <h3>Mis acompañantes</h3>
+
+              <p>
+                Puedes registrar hasta
+                {{ guest.maxCompanions }} acompañantes.
+              </p>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Número de acompañantes</mat-label>
+
+                <mat-select
+                  [value]="companions.length"
+                  (selectionChange)="updateCompanions($event.value)">
+
+                  @for (
+                    number of [].constructor(guest.maxCompanions + 1);
+                    track $index
+                  ) {
+                    <mat-option [value]="$index">
+                      {{ $index }}
+                    </mat-option>
+                  }
+
+                </mat-select>
+              </mat-form-field>
+
+              <div formArrayName="companions">
+
+                @for (
+                  companion of companions.controls;
+                  track $index
+                ) {
+                  <mat-form-field appearance="outline" class="full-width">
+
+                    <mat-label>
+                      Nombre del acompañante {{ $index + 1 }}
+                    </mat-label>
+
+                    <input
+                      matInput
+                      [formControlName]="$index"
+                      placeholder="Nombre completo">
+
+                    @if (companion.hasError('required') && companion.touched) {
+                      <mat-error>
+                        El nombre es obligatorio.
+                      </mat-error>
+                    }
+
+                  </mat-form-field>
+                }
+
+              </div>
+
+            </section>
+          }
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="submit-button">
+
+            Confirmar respuesta
+
+          </button>
+
+        </form>
+
+      </mat-card-content>
+
+    </mat-card>
+  </main>
+}
+
+@if (submitted) {
+  <main class="success-container">
+    <h1>¡Muchas gracias!</h1>
+    <p>Hemos recibido tu respuesta.</p>
+  </main>
+}
