@@ -1,32 +1,33 @@
-import { Injectable } from '@angular/core';
-import { Rsvp } from '../models/rsvp';
-import { Observable, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { SubmitRsvpRequest } from '../models/submit-rsvp-request';
+import { SubmitRsvpResponse } from '../models/submit-rsvp-response';
+import { SupabaseService } from './supabase.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RsvpService {
-  private responses: Rsvp[] = [];
+  private readonly supabaseService = inject(SupabaseService);
 
-  save(response: Rsvp): Observable<Rsvp> {
-    const existingIndex = this.responses.findIndex(
-      x => x.guestId === response.guestId
-    );
+  async submit(
+    request: SubmitRsvpRequest
+  ): Promise<SubmitRsvpResponse> {
+    const { data, error } =
+      await this.supabaseService.supabase.functions.invoke<SubmitRsvpResponse>(
+        'submit-rsvp',
+        {
+          body: request
+        }
+      );
 
-    if (existingIndex >= 0) {
-      this.responses[existingIndex] = response;
-    } else {
-      this.responses.push(response);
+    if (error) {
+      throw new Error('No fue posible registrar tu respuesta.');
     }
 
-    return of(response);
-  }
+    if (!data) {
+      throw new Error('No se recibió confirmación del servidor.');
+    }
 
-  getByGuestId(guestId: string): Observable<Rsvp | null> {
-    const response = this.responses.find(
-      x => x.guestId === guestId
-    ) ?? null;
-
-    return of(response);
+    return data;
   }
 }

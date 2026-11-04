@@ -1,39 +1,30 @@
-import { Injectable } from '@angular/core';
-import { Guest } from '../models/guest';
-import { Observable, of, throwError } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { InvitationResponse } from '../models/invitation-response';
+import { SupabaseService } from './supabase.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GuestService {
-  private readonly guests: Guest[] = [
-    {
-      id: '1',
-      token: 'a8f92k',
-      name: 'Josué Cervantes',
-      maxCompanions: 2
-    },
-    {
-      id: '2',
-      token: 'b7d31x',
-      name: 'Invitado de prueba',
-      maxCompanions: 1
-    },
-    {
-      id: '3',
-      token: 'c9e52m',
-      name: 'Invitado sin acompañantes',
-      maxCompanions: 0
-    }
-  ];
+  private readonly supabaseService = inject(SupabaseService);
 
-  getByToken(token: string): Observable<Guest> {
-    const guest = this.guests.find(x => x.token === token);
+  async getInvitation(token: string): Promise<InvitationResponse> {
+    const { data, error } =
+      await this.supabaseService.supabase.functions.invoke<InvitationResponse>(
+        'get-invitation',
+        {
+          body: { token }
+        }
+      );
 
-    if (!guest) {
-      return throwError(() => new Error('Invitación no encontrada'));
+    if (error) {
+      throw new Error('No fue posible consultar la invitación.');
     }
 
-    return of(guest);
+    if (!data) {
+      throw new Error('No se recibió información de la invitación.');
+    }
+
+    return data;
   }
 }

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import {
   FormArray,
   FormBuilder,
+  FormControl,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators
@@ -14,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { Guest } from '../../core/models/guest';
 import { Rsvp } from '../../core/models/rsvp';
@@ -22,95 +25,176 @@ import { CommonModule } from '@angular/common';
 import { GuestService } from '../../core/services/guest.service';
 import { RsvpService } from '../../core/services/rsvp.service';
 
+type RsvpForm = FormGroup<{
+  attending: FormControl<boolean>;
+  companionCount: FormControl<number>;
+  companions: FormArray<FormControl<string>>;
+}>;
+
 @Component({
   selector: 'app-rsvp',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatRadioModule,
     MatFormFieldModule,
+    MatSelectModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule,
-    FormsModule,
-    CommonModule
+    MatProgressSpinnerModule
   ],
   templateUrl: './rsvp.component.html',
   styleUrl: './rsvp.component.scss'
 })
 export class RsvpComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly guestService = inject(GuestService);
   private readonly rsvpService = inject(RsvpService);
 
   guest: Guest | null = null;
-  loading = true;
-  errorMessage = '';
-  submitted = false;
+  previousRsvp: Rsvp | null = null;
 
-  form = this.fb.group({
-    attending: [true, Validators.required],
-    companions: this.fb.array<string>([])
+  loading = true;
+  submitting = false;
+  hasPreviousResponse = false;
+
+  errorMessage = '';
+  successMessage = '';
+
+  readonly form: RsvpForm = new FormGroup({
+    attending: new FormControl(false, { nonNullable: true }),
+    companionCount: new FormControl(0, { nonNullable: true }),
+    companions: new FormArray<FormControl<string>>([])
   });
 
-  get companions(): FormArray {
+  get companions(): FormArray<FormControl<string>> {
     return this.form.controls.companions;
   }
 
-  ngOnInit(): void {
-  const token = this.route.snapshot.paramMap.get('token');
+  get companionOptions(): number[] {
+    if (!this.guest) {
+      return [];
+    }
 
-  if (!token) {
-    this.errorMessage = 'Invitación no válida.';
-    this.loading = false;
-    return;
+    return Array.from(
+      { length: this.guest.maxCompanions + 1 },
+      (_, index) => index
+    );
   }
 
-  this.guestService.getByToken(token).subscribe({
-    next: guest => {
-      this.guest = guest;
+  async ngOnInit(): Promise<void> {
+    const token = this.route.snapshot.paramMap.get('token');
+
+    if (!token) {
+      this.errorMessage = 'No se encontró el token de la invitación.';
       this.loading = false;
-    },
-    error: () => {
-      this.errorMessage = 'No encontramos tu invitación.';
+      return;
+    }
+
+    try {
+      const response = await this.guestService.getInvitation(token);
+
+      this.guest = response.guest;
+      this.previousRsvp = response.rsvp;
+      this.hasPreviousResponse = !!response.rsvp;
+
+      if (response.rsvp) {
+        this.loadPreviousResponse(response.rsvp);
+      }
+    } catch (error) {
+      this.errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'No fue posible cargar la invitación.';
+    } finally {
       this.loading = false;
     }
-  });
-}
+  }
+
+  onAttendanceChange(attending: boolean): void {
+    if (!attending) {
+      this.updateCompanions(0);
+    }
+  }
 
   updateCompanions(count: number): void {
     this.companions.clear();
 
-    for (let i = 0; i < count; i++) {
+    for (let index = 0; index < count; index++) {
       this.companions.push(
-        this.fb.control('', {
-          validators: [Validators.required]
+        new FormControl('', {
+          nonNullable: true,
+          validators: [
+            Validators.required,
+            Validators.maxLength(150)
+          ]
         })
       );
     }
+
+    this.form.controls.companionCount.setValue(count);
   }
 
-  confirmAttendance(): void {
-    if (this.form.invalid || !this.guest) {
-      this.form.markAllAsTouched();
+  private loadPreviousResponse(rsvp: Rsvp): void {
+    this.form.controls.attending.setValue(rsvp.attending);
+
+    if (rsvp.attending) {
+      this.updateCompanions(rsvp.companions.length);
+
+      rsvp.companions.forEach((companion, index) => {
+        this.companions.at(index).setValue(companion.name);
+      });
+    }
+  }
+
+  async submit(): Promise<void> {
+    if (!this.guest) {
       return;
     }
 
-    const response: Rsvp = {
-      guestId: this.guest.id,
-      attending: this.form.controls.attending.value!,
-      companions: this.companions.getRawValue()
-    };
+    this.form.markAllAsTouched();
 
-    this.rsvpService.save(response).subscribe({
-      next: () => {
-        this.submitted = true;
-      },
-      error: () => {
-        this.errorMessage = 'No fue posible guardar tu respuesta.';
-      }
-    });
+    if (this.form.invalid) {
+      return;
+    }
+
+    const token = this.route.snapshot.paramMap.get('token');
+
+    if (!token) {
+      this.errorMessage = 'No se encontró el token de la invitación.';
+      return;
+    }
+
+    this.submitting = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    try {
+      const attending = this.form.controls.attending.value;
+
+      const companions = attending
+        ? this.companions.getRawValue()
+        : [];
+
+      const response = await this.rsvpService.submit({
+        token,
+        attending,
+        companions
+      });
+
+      this.previousRsvp = response.rsvp;
+      this.hasPreviousResponse = true;
+
+      this.successMessage = '¡Tu respuesta se registró correctamente!';
+    } catch (error) {
+      this.errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'No fue posible registrar tu respuesta.';
+    } finally {
+      this.submitting = false;
+    }
   }
 }

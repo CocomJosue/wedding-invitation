@@ -1,44 +1,46 @@
-@if (loading) {
-  <main class="success-container">
-    <p>Cargando tu invitación...</p>
-  </main>
-}
 
-@if (errorMessage) {
-  <main class="success-container">
-    <h1>¡Ups!</h1>
-    <p>{{ errorMessage }}</p>
-  </main>
-}
+<main class="rsvp-container">
 
-@if (guest && !submitted && !loading && !errorMessage) {
-  <main class="rsvp-container">
+  @if (loading) {
+    <mat-spinner diameter="45"></mat-spinner>
+    <p>Preparando tu invitación...</p>
+  } @else if (errorMessage && !guest) {
     <mat-card class="rsvp-card">
+      <mat-card-content>
+        <h2>Invitación no disponible</h2>
+        <p>{{ errorMessage }}</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (guest) {
+    <mat-card class="rsvp-card">
+
+      <mat-card-header>
+        <mat-card-title>
+          ¡Hola, {{ guest.name }}!
+        </mat-card-title>
+
+        <mat-card-subtitle>
+          Nos encantaría contar con tu presencia.
+        </mat-card-subtitle>
+      </mat-card-header>
 
       <mat-card-content>
 
-        <div class="header">
-          <span class="subtitle">¡Nos encantaría contar contigo!</span>
-
-          <h1>Confirmación de asistencia</h1>
-
-          <p class="guest-name">
-            Hola, {{ guest.name }}
+        @if (hasPreviousResponse) {
+          <p class="previous-response">
+            Ya registraste una respuesta anteriormente.
+            Puedes actualizarla aquí.
           </p>
+        }
 
-          <p class="description">
-            Nos gustaría saber si podrás acompañarnos en este
-            día tan especial.
-          </p>
-        </div>
+        <form [formGroup]="form" (ngSubmit)="submit()">
 
-        <form [formGroup]="form" (ngSubmit)="confirmAttendance()">
-
-          <section class="attendance-section">
+          <section class="form-section">
             <h3>¿Nos acompañarás?</h3>
 
             <mat-radio-group
               formControlName="attending"
+              (change)="onAttendanceChange($event.value)"
               class="attendance-options">
 
               <mat-radio-button [value]="true">
@@ -46,93 +48,92 @@
               </mat-radio-button>
 
               <mat-radio-button [value]="false">
-                No podré asistir
+                Lo siento, no podré asistir.
               </mat-radio-button>
 
             </mat-radio-group>
           </section>
 
-          @if (form.controls.attending.value && guest.maxCompanions > 0) {
-            <section class="companions-section">
+          @if (form.controls.attending.value) {
+            <section class="form-section">
 
-              <h3>Mis acompañantes</h3>
+              <h3>¿Cuántos acompañantes llevarás?</h3>
 
-              <p>
+              <p class="helper-text">
                 Puedes registrar hasta
-                {{ guest.maxCompanions }} acompañantes.
+                {{ guest.maxCompanions }} acompañantes,
+                además de ti.
               </p>
 
               <mat-form-field appearance="outline">
                 <mat-label>Número de acompañantes</mat-label>
 
                 <mat-select
-                  [value]="companions.length"
+                  [value]="form.controls.companionCount.value"
                   (selectionChange)="updateCompanions($event.value)">
 
-                  @for (
-                    number of [].constructor(guest.maxCompanions + 1);
-                    track $index
-                  ) {
-                    <mat-option [value]="$index">
-                      {{ $index }}
+                  @for (count of companionOptions; track count) {
+                    <mat-option [value]="count">
+                      {{ count }}
                     </mat-option>
                   }
 
                 </mat-select>
               </mat-form-field>
 
-              <div formArrayName="companions">
+              @for (companion of companions.controls; track $index) {
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>
+                    Nombre del acompañante {{ $index + 1 }}
+                  </mat-label>
 
-                @for (
-                  companion of companions.controls;
-                  track $index
-                ) {
-                  <mat-form-field appearance="outline" class="full-width">
+                  <input
+                    matInput
+                    [formControl]="companion"
+                    placeholder="Nombre completo">
 
-                    <mat-label>
-                      Nombre del acompañante {{ $index + 1 }}
-                    </mat-label>
+                  @if (companion.hasError('required') && companion.touched) {
+                    <mat-error>Este campo es obligatorio.</mat-error>
+                  }
 
-                    <input
-                      matInput
-                      [formControlName]="$index"
-                      placeholder="Nombre completo">
-
-                    @if (companion.hasError('required') && companion.touched) {
-                      <mat-error>
-                        El nombre es obligatorio.
-                      </mat-error>
-                    }
-
-                  </mat-form-field>
-                }
-
-              </div>
+                  @if (companion.hasError('maxlength')) {
+                    <mat-error>El nombre es demasiado largo.</mat-error>
+                  }
+                </mat-form-field>
+              }
 
             </section>
+          }
+
+          @if (errorMessage) {
+            <p class="error-message">{{ errorMessage }}</p>
+          }
+
+          @if (successMessage) {
+            <p class="success-message">{{ successMessage }}</p>
           }
 
           <button
             mat-flat-button
             color="primary"
             type="submit"
-            class="submit-button">
+            class="submit-button"
+            [disabled]="submitting">
 
-            Confirmar respuesta
+            @if (submitting) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              {{ hasPreviousResponse
+                ? 'Volver a mandar'
+                : 'Confirmar asistencia' }}
+            }
 
           </button>
 
         </form>
 
       </mat-card-content>
-
     </mat-card>
-  </main>
-}
+  }
 
-@if (submitted) {
-  <main class="success-container">
-    <h1>¡Muchas gracias!</h1>
-    <p>Hemos recibido tu respuesta.</p>
-  </main>
-}
+</main>

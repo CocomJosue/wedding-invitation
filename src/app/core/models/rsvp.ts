@@ -1,7 +1,8 @@
+import { Companion } from "./companion";
+
 export interface Rsvp {
-  id?: number;
-  guestId: string;
+  id: number;
   attending: boolean;
-  companions: string[];
-  submittedAt?: string;
+  submittedAt: string;
+  companions: Companion[];
 }
