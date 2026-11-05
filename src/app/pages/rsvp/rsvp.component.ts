@@ -25,6 +25,8 @@ import { CommonModule } from '@angular/common';
 import { GuestService } from '../../core/services/guest.service';
 import { RsvpService } from '../../core/services/rsvp.service';
 
+import { Location } from '@angular/common';
+
 type RsvpForm = FormGroup<{
   attending: FormControl<boolean>;
   companionCount: FormControl<number>;
@@ -52,6 +54,7 @@ export class RsvpComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly guestService = inject(GuestService);
   private readonly rsvpService = inject(RsvpService);
+  private readonly location = inject(Location);
 
   guest: Guest | null = null;
   previousRsvp: Rsvp | null = null;
@@ -196,5 +199,9 @@ export class RsvpComponent implements OnInit {
     } finally {
       this.submitting = false;
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

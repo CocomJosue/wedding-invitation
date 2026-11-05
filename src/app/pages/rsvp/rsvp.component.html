@@ -127,9 +127,15 @@
                 ? 'Volver a mandar'
                 : 'Confirmar asistencia' }}
             }
-
           </button>
-
+          <button
+            mat-flat-button
+            color="secondary"
+            type="button"
+            class="submit-button"
+            (click)="goBack()">
+            Regresar  
+        </button>
         </form>
 
       </mat-card-content>
