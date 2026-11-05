@@ -78,3 +78,20 @@ weddingAudio.addEventListener('error',()=>{
   musicLabel.textContent='Agregar canción';
   musicToggle.title='Coloca una copia autorizada en assets/brillas.mp3';
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const confirmButton = document.getElementById('confirm-button');
+
+    // Obtener el token de la URL
+    const token = window.location.pathname
+        .split('/')
+        .filter(Boolean)[0];
+
+    if (!token) {
+        confirmButton.classList.add('disabled');
+        confirmButton.setAttribute('aria-disabled', 'true');
+        return;
+    }
+
+    // Redirigir a Angular conservando el token
+    confirmButton.href = `/app/i/${encodeURIComponent(token)}`;
+});
