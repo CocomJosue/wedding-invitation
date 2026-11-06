@@ -29,17 +29,16 @@
       <div class="wax">F<span>♡</span>J</div>
     </div>
     <button id="open-invite" class="btn btn-wine">Abrir invitación</button>
-    <span class="pine-corner" aria-hidden="true">✳</span>
   </div>
-  <!-- Música: coloca una copia autorizada de la canción en assets/brillas.mp3 -->
-  <audio id="wedding-audio" preload="none" loop src="assets/brillas.mp3"></audio>
+  <!-- Música: coloca una copia autorizada de la canción en assets/flyMeToTheMoon.mp3 -->
+  <audio id="wedding-audio" preload="none" loop src="assets/flyMeToTheMoon.mp3"></audio>
   <button id="music-toggle" class="music-toggle" type="button" aria-label="Reproducir música"
-    title="Brillas · León Larregui" hidden><span id="music-icon" aria-hidden="true">♫</span><span
+    title="flyMeToTheMoon · León Larregui" hidden><span id="music-icon" aria-hidden="true">♫</span><span
       id="music-label">Música</span></button>
   <header class="site-header"><a href="#inicio" class="monogram">F <span>&</span> J</a><button id="menu-toggle"
       aria-label="Abrir menú" aria-expanded="false">☰</button>
     <nav id="site-nav"><a href="#inicio">Inicio</a><a href="#vestimenta">Vestimenta</a><a
-        href="#ubicaciones">Ubicaciones</a><a href="#confirmar">Confirmar</a></nav>
+        href="#ubicaciones">Ubicaciones</a><a id="btnConfirmar" href="#confirmar">Confirmar</a></nav>
   </header>
   <main>
     <section class="hero" id="inicio"><img class="hero-image" src="assets/IMG_6670.webp"
@@ -120,7 +119,7 @@
         <div><i style="--swatch:#F6EAD9"></i><small>Marfil</small></div>
       </div>
       <p class="small reveal">También tonos muy similares y colores neón o fosforescentes.</p>
-      <div id="family-rules" class="rules reveal">
+      <div id="family-rules" class="rules reveal" hidden="true">
         <h3>También te pedimos evitar</h3>
         <ul>
           <li>Escotes muy pronunciados y transparencias excesivas.</li>
@@ -145,7 +144,7 @@
               aria-disabled="true">Cómo llegar</a>
           </div>
         </article>
-        <article class="location-card reveal">
+        <article id="location" class="location-card reveal">
           <div class="location-head">♡ &nbsp; Recepción</div>
           <div class="location-body">
             <h3 id="party-name">Salón o lugar — por confirmar</h3>

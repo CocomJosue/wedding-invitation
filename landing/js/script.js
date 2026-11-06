@@ -5,8 +5,6 @@ const CONFIG = {
 };
 // Páginas disponibles: index.html?version=familiar (con reglas de prendas)
 // y index.html?version=general (sin reglas de prendas). Colores reservados en ambas.
-const variant = window.INVITE_VARIANT || (new URLSearchParams(location.search).get('version') === 'general' ? 'general' : 'familiar');
-if (variant==='general') document.querySelector('#family-rules').hidden=true;
 const setText=(id,value)=>document.getElementById(id).textContent=value;
 setText('civil-name',CONFIG.civil.name);setText('civil-address',CONFIG.civil.address);setText('civil-time',CONFIG.civil.time);
 setText('party-name',CONFIG.reception.name);setText('party-address',CONFIG.reception.address);setText('party-time',CONFIG.reception.time);
@@ -21,7 +19,7 @@ function updateCountdown(){const delta=Math.max(0,new Date('2026-12-19T10:00:00-
 const modal=document.getElementById('photo-modal');document.querySelectorAll('.gallery-item').forEach(b=>b.addEventListener('click',()=>{modal.querySelector('img').src=b.dataset.full;modal.showModal()}));document.getElementById('close-modal').addEventListener('click',()=>modal.close());modal.addEventListener('click',e=>{if(e.target===modal)modal.close()});
 
 // Música ambiental: inicia únicamente después del clic en «Abrir invitación».
-// IMPORTANTE: el archivo de audio no se incluye; añade una copia autorizada en assets/brillas.mp3.
+// IMPORTANTE: el archivo de audio no se incluye; añade una copia autorizada en assets/flyMeToTheMoon.mp3.
 const weddingAudio=document.getElementById('wedding-audio');
 const musicToggle=document.getElementById('music-toggle');
 const musicLabel=document.getElementById('music-label');
@@ -30,17 +28,17 @@ function refreshMusicButton(){
   const playing=!weddingAudio.paused && !weddingAudio.ended;
   musicLabel.textContent=playing?'Pausar música':'Reproducir música';
   musicIcon.textContent=playing?'Ⅱ':'♫';
-  musicToggle.setAttribute('aria-label',playing?'Pausar Brillas de León Larregui':'Reproducir Brillas de León Larregui');
-  musicToggle.title=playing?'Pausar música':'Brillas · León Larregui';
+  musicToggle.setAttribute('aria-label',playing?'Pausar Fly Me To The Moon':'Reproducir Fly Me To The Moon');
+  musicToggle.title=playing?'Pausar música':'Fly Me To The Moon';
 }
 async function playWeddingMusic(){
   musicToggle.hidden=false;
   try {await weddingAudio.play();} catch(error){
     musicLabel.textContent='Agregar canción';
-    musicToggle.title='Falta añadir assets/brillas.mp3';
+    musicToggle.title='Falta añadir assets/flyMeToTheMoon.mp3';
   }
   refreshMusicButton();
-  if(weddingAudio.error){musicLabel.textContent='Agregar canción';musicToggle.title='Falta añadir assets/brillas.mp3';}
+  if(weddingAudio.error){musicLabel.textContent='Agregar canción';musicToggle.title='Falta añadir assets/flyMeToTheMoon.mp3';}
 }
 // Se invoca desde el gesto de apertura para cumplir las restricciones de los navegadores.
 openBtn.addEventListener('click',playWeddingMusic);
@@ -52,7 +50,7 @@ weddingAudio.addEventListener('pause',refreshMusicButton);
 weddingAudio.addEventListener('error',()=>{
   musicToggle.hidden=false;
   musicLabel.textContent='Agregar canción';
-  musicToggle.title='Coloca una copia autorizada en assets/brillas.mp3';
+  musicToggle.title='Coloca una copia autorizada en assets/flyMeToTheMoon.mp3';
 });
 document.addEventListener('DOMContentLoaded', () => {
     const confirmButton = document.getElementById('confirm-button');
@@ -71,3 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Redirigir a Angular conservando el token
     confirmButton.href = `/app/i/${encodeURIComponent(token)}`;
 });
+
+const token = window.location.pathname
+    .split('/')
+    .filter(Boolean)[0];
+
+if (!token) {
+  document.getElementById('confirmar').style.display = 'none';
+  document.getElementById('btnConfirmar').style.display = 'none';
+} 
+else if(
+  token === 'familia-perez-test-2026-001' // TODO: Agregar aquí todos los tokens a los que queramos mostrarles el mensaje
+) {
+  document.querySelector('#family-rules').hidden=false;
+} 
+else if( token === 'familia-perez-test-2026-002') { // TODO: Agregar aquí todos los tokens a los que queramos ocultarles la ubicación
+  document.getElementById('location').style.display = 'none';
+}

@@ -30,7 +30,6 @@ import { Location } from '@angular/common';
 type RsvpForm = FormGroup<{
   attending: FormControl<boolean>;
   companionCount: FormControl<number>;
-  companions: FormArray<FormControl<string>>;
 }>;
 
 @Component({
@@ -69,12 +68,7 @@ export class RsvpComponent implements OnInit {
   readonly form: RsvpForm = new FormGroup({
     attending: new FormControl(false, { nonNullable: true }),
     companionCount: new FormControl(0, { nonNullable: true }),
-    companions: new FormArray<FormControl<string>>([])
   });
-
-  get companions(): FormArray<FormControl<string>> {
-    return this.form.controls.companions;
-  }
 
   get companionOptions(): number[] {
     if (!this.guest) {
@@ -123,20 +117,6 @@ export class RsvpComponent implements OnInit {
   }
 
   updateCompanions(count: number): void {
-    this.companions.clear();
-
-    for (let index = 0; index < count; index++) {
-      this.companions.push(
-        new FormControl('', {
-          nonNullable: true,
-          validators: [
-            Validators.required,
-            Validators.maxLength(150)
-          ]
-        })
-      );
-    }
-
     this.form.controls.companionCount.setValue(count);
   }
 
@@ -145,10 +125,6 @@ export class RsvpComponent implements OnInit {
 
     if (rsvp.attending) {
       this.updateCompanions(rsvp.companions.length);
-
-      rsvp.companions.forEach((companion, index) => {
-        this.companions.at(index).setValue(companion.name);
-      });
     }
   }
 
@@ -176,9 +152,12 @@ export class RsvpComponent implements OnInit {
 
     try {
       const attending = this.form.controls.attending.value;
-
+      let i = 1;
       const companions = attending
-        ? this.companions.getRawValue()
+        ? Array.from(
+            { length: this.form.controls.companionCount.value },
+            () => `unspecified ${i++}`
+          )
         : [];
 
       const response = await this.rsvpService.submit({

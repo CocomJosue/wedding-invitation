@@ -3,7 +3,6 @@
 
   @if (loading) {
     <mat-spinner diameter="45"></mat-spinner>
-    <p>Preparando tu invitación...</p>
   } @else if (errorMessage && !guest) {
     <mat-card class="rsvp-card">
       <mat-card-content>
@@ -25,7 +24,9 @@
       </mat-card-header>
 
       <mat-card-content>
-
+        <p style="text-align: justify;">
+          Te pedimos confirmar tu asistencia antes del 9 de diciembre para que podamos preparar todo y compartir contigo este día tan especial.
+        </p>
         @if (hasPreviousResponse) {
           <p class="previous-response">
             Ya registraste una respuesta anteriormente.
@@ -57,16 +58,16 @@
           @if (form.controls.attending.value) {
             <section class="form-section">
 
-              <h3>¿Cuántos acompañantes llevarás?</h3>
+              <h3>¿Cuántos lugares te gustaría confirmar?</h3>
 
               <p class="helper-text">
-                Puedes registrar hasta
-                {{ guest.maxCompanions }} acompañantes,
-                además de ti.
+                Puedes confirmar hasta
+                {{ guest.maxCompanions + 1}} lugares,
+                incluyéndote de ti.
               </p>
 
               <mat-form-field appearance="outline">
-                <mat-label>Número de acompañantes</mat-label>
+                <mat-label>Número de lugares</mat-label>
 
                 <mat-select
                   [value]="form.controls.companionCount.value"
@@ -74,34 +75,12 @@
 
                   @for (count of companionOptions; track count) {
                     <mat-option [value]="count">
-                      {{ count }}
+                      {{ count + 1 }}
                     </mat-option>
                   }
 
                 </mat-select>
               </mat-form-field>
-
-              @for (companion of companions.controls; track $index) {
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>
-                    Nombre del acompañante {{ $index + 1 }}
-                  </mat-label>
-
-                  <input
-                    matInput
-                    [formControl]="companion"
-                    placeholder="Nombre completo">
-
-                  @if (companion.hasError('required') && companion.touched) {
-                    <mat-error>Este campo es obligatorio.</mat-error>
-                  }
-
-                  @if (companion.hasError('maxlength')) {
-                    <mat-error>El nombre es demasiado largo.</mat-error>
-                  }
-                </mat-form-field>
-              }
-
             </section>
           }
 
