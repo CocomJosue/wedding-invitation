@@ -79,10 +79,16 @@ if (!token) {
   document.getElementById('btnConfirmar').style.display = 'none';
 } 
 else if(
-  token === 'familia-perez-test-2026-001' // TODO: Agregar aquí todos los tokens a los que queramos mostrarles el mensaje
+  token === 'bwcxtherhsbazvgriiwr' ||
+  token === 'svizwqrbdbvdoycdxzlm' ||
+  token === 'fodcvlajuhnvtkgmdrkd' ||
+  token === 'eibuvtedztqfxgsogvwc' ||
+  token === 'mwkzrfjvpxnqhtbcygud' ||
+  token === 'qjbxnvelkzphwrtfaycm' ||
+  token === 'rnpvhyqkzjfxwmtbceug' // TODO: Agregar aquí todos los tokens a los que queramos mostrarles el mensaje
 ) {
   document.querySelector('#family-rules').hidden=false;
 } 
-else if( token === 'familia-perez-test-2026-002') { // TODO: Agregar aquí todos los tokens a los que queramos ocultarles la ubicación
+else if( token === 'lmknjbhvqwlmknjbhvqw') { // TODO: Agregar aquí todos los tokens a los que queramos ocultarles la ubicación
   document.getElementById('location').style.display = 'none';
 }
