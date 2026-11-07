@@ -90,7 +90,7 @@ else{
   ) {
     document.querySelector('#family-rules').hidden=false;
   } 
-  if( token === 'lmknjbhvqwlmknjbhvqw' || 'hwrtfaycmxnqhtbcygud') { // TODO: Agregar aquí todos los tokens a los que queramos ocultarles la ubicación
+  if( token === 'lmknjbhvqwlmknjbhvqw' || token === 'hwrtfaycmxnqhtbcygud') { // TODO: Agregar aquí todos los tokens a los que queramos ocultarles la ubicación
     document.getElementById('location').style.display = 'none';
   }
 }
