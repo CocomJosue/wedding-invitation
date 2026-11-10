@@ -90,7 +90,12 @@ else{
   ) {
     document.querySelector('#family-rules').hidden=false;
   } 
-  if( token === 'lmknjbhvqwlmknjbhvqw' || token === 'hwrtfaycmxnqhtbcygud') { // TODO: Agregar aquí todos los tokens a los que queramos ocultarles la ubicación
+  if( token === 'lmknjbhvqwlmknjbhvqw' || token === 'hwrtfaycmxnqhtbcygud' || token === 'cpjrhxwqzvmtknfbyale') { // TODO: Agregar aquí todos los tokens a los que queramos ocultarles la ubicación
     document.getElementById('location').style.display = 'none';
+  }
+  if(token === 'special') {
+    document.getElementById('location').style.display = 'none';
+    document.getElementById('confirmar').style.display = 'none';
+    document.getElementById('btnConfirmar').style.display = 'none';
   }
 }
